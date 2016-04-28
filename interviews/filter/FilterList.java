@@ -1,4 +1,4 @@
-package intervews.filter;
+package interviews.filter;
 
 import java.util.ArrayList;
 import java.util.List;

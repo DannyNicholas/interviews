@@ -1,4 +1,4 @@
-package intervews.filter;
+package interviews.filter;
 
 public interface IFilter {
 
