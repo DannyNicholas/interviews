@@ -1,15 +1,14 @@
 package interviews.powerSet;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PowerSet {
 
-    private static List<String> powerSet(String s) {
+    private static Set<String> powerSet(String s) {
 
         if (s.length() == 0) {
-            List<String> empty = new ArrayList<>();
+            Set<String> empty = new HashSet<>();
             empty.add("");
             return empty;
         }
@@ -17,9 +16,9 @@ public class PowerSet {
         String head = s.substring(0, 1);
         String tail = s.substring(1);
 
-        List<String> set = powerSet(tail);
+        Set<String> set = powerSet(tail);
 
-        List<String> tailSet = new ArrayList<>();
+        Set<String> tailSet = new HashSet<>();
         for (String aTail : set) {
             tailSet.add(head + aTail);
         }
@@ -31,7 +30,7 @@ public class PowerSet {
     }
 
     public static void main(String[] args) {
-        List<String> permutations = powerSet("hello");
+        Set<String> permutations = powerSet("hello");
         permutations.remove("");
         System.out.println(permutations);
     }

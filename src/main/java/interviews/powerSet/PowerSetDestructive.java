@@ -1,7 +1,6 @@
 package interviews.powerSet;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class PowerSetDestructive {
@@ -13,7 +12,6 @@ public class PowerSetDestructive {
             StringBuilder builder = new StringBuilder(word);
             builder.deleteCharAt(i);
             String reduced = builder.toString();
-            set.add(reduced);
             powerSet(set, reduced);
         }
     }
@@ -21,6 +19,7 @@ public class PowerSetDestructive {
     public static void main(String[] args) {
         Set<String> permutations = new HashSet<>();
         powerSet(permutations, "hello");
+        permutations.remove("");
         System.out.println(permutations);
     }
 }
