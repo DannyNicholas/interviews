@@ -3,20 +3,25 @@ package interviews.primefactors;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Solution {
+/**
+ * Express any number as a list of prime factors.
+ * e.g. 6 = [2, 3]
+ * e.g. 12 = [2, 2, 3]
+ */
+public class PrimeFactors {
 
     private final int[] primes;
 
     public static void main(String[] args) {
 
-        Solution sol = new Solution();
+        PrimeFactors sol = new PrimeFactors();
         sol.factorise(12);
         sol.factorise(6);
         sol.factorise(22);
         sol.factorise(11);
     }
 
-    public Solution() {
+    public PrimeFactors() {
         this.primes = generatePrimes(50);
     }
 

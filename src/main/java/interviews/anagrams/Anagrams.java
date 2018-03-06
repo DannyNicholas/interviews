@@ -1,43 +1,47 @@
 package interviews.anagrams;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Create all possible anagrams for a supplied word
+ */
 public class Anagrams {
 
     // create a set of anagrams for a word
     private static Set<String> anagrams(String word) {
-        Set<String> anagrams = new HashSet<>();
         char[] chars = word.toCharArray();
-        anagramRecursive(anagrams, chars, 0);
-        return anagrams;
+        return anagramRecursive(chars, 0);
     }
 
-    private static void anagramRecursive(Set<String> anagrams, char[] chars, int index) {
+    private static Set<String> anagramRecursive(char[] chars, int startIndex) {
 
-        if (index == chars.length-1) {
-            anagrams.add(new String(chars));
+        Set<String> set = new HashSet<String>();
+
+        if (startIndex == chars.length-1) {
+            set.add(new String(chars));
         }
         else {
-            for (int i = index; i < chars.length; i ++) {
+            // iteratively swap chars with char at start
+            for (int i = startIndex; i < chars.length; i ++) {
 
-                // swap chars
-                char tmp = chars[index];
-                chars[index] = chars[i];
-                chars[i] = tmp;
+                // swap chars in a copy
+                char[] copy = Arrays.copyOf(chars, chars.length);
+                char tmp = copy[startIndex];
+                copy[startIndex] = copy[i];
+                copy[i] = tmp;
 
-                anagramRecursive(anagrams, chars, index+1);
-
-                // swap chars back
-                tmp = chars[index];
-                chars[index] = chars[i];
-                chars[i] = tmp;
+                set.addAll(anagramRecursive(copy, startIndex+1));
             }
         }
+
+        return set;
     }
 
     public static void main(String[] args) {
-        Set<String> anagrams = anagrams("hello");
+        Set<String> anagrams = anagrams("dog");
         System.out.println(anagrams);
+        System.out.println(anagrams.size());
     }
 }
