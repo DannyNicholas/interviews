@@ -32,8 +32,11 @@ public class AdvancedMedianFinder {
         index = mf.partition(listTwo, 9);
         System.out.println(index);
 
-//        int value = mf.median(listOne, listTwo);
-//        System.out.println(value);
+        int value = mf.median(listOne, listTwo);
+        System.out.println(value);
+
+        int value2 = mf.median(listThree, listFour);
+        System.out.println(value2);
 
 
 //        int oddMedian = mf.efficientMedian(listOne, listTwo);
@@ -48,35 +51,51 @@ public class AdvancedMedianFinder {
     public int median(int[] arrayOne, int[] arrayTwo) {
 
 
-        int guess = -1;
+        //int guess = -1;
         int totalLength = arrayOne.length + arrayTwo.length;
         int wantedIndex = totalLength/2;
 
 
         boolean medianFound = false;
         int guessIndex = arrayOne.length / 2;
-        while (!medianFound) {
 
-            guess = arrayOne[guessIndex];
+
+        int start = 0;
+        int finish = arrayOne.length - 1;
+
+
+        while (start<=finish) {
+
+            int index = (start + finish)/2;
+            int guess = arrayOne[index];
+
+            //guess = arrayOne[guessIndex];
 
             int partition = partition(arrayTwo, guess);
 
-            int valuesBelow = guessIndex + partition;
+            int valuesBelow = guessIndex + partition + 1;
+            int valuesAbove = (arrayOne.length - guessIndex) + (arrayTwo.length - partition);
+
+            System.out.println("Index= "+ index + ". Guess= "+ guess + ". Values Below= " + valuesBelow + ". Values Above= " + valuesAbove);
+
             if (valuesBelow == wantedIndex) {
                 medianFound = true;
+                System.out.println("Found!");
+                return guess;
             }
-            else if (valuesBelow < wantedIndex) {
-                guessIndex++;
+
+            if (valuesBelow < wantedIndex) {
+                start++;
             }
             else {
-                guessIndex--;
+                finish--;
             }
 
 
 
         }
 
-        return guess;
+        return -1;
 
     }
 
@@ -84,28 +103,27 @@ public class AdvancedMedianFinder {
     // return index of partition so that...
     // < value exist in lower partition
     // >= value exist in upper partition
-    public int partition(int[] array, int value) {
+    public int partition(int[] array, int search) {
 
         int lowerPointer = 0;
-        int upperPointer = array.length;
+        int upperPointer = array.length - 1;
+        int midIndex = -1;
 
-        while(upperPointer-lowerPointer > 0) {
-            int midIndex = lowerPointer + ((upperPointer - lowerPointer) / 2);
+        while(lowerPointer <= upperPointer) {
 
-            if (value >= array[midIndex]) {
+            midIndex = (upperPointer + lowerPointer) / 2;
+            int foundValue = array[midIndex];
+
+            if (foundValue == search) {
+                return midIndex;
+            }
+
+            if (foundValue < search) {
                 lowerPointer = midIndex + 1;
             }
             else {
                 upperPointer = midIndex - 1;
             }
-
-            // if lowerPointer has exceeded the array size, all
-            // elements are lower than the searched value
-            if (lowerPointer >= array.length) {
-                return array.length;
-            }
-
-
 
 //            System.out.println(midIndex);
 //            System.out.println(upperPointer);
@@ -118,7 +136,7 @@ public class AdvancedMedianFinder {
 
         }
 
-        return lowerPointer;
+        return midIndex;
 
 
 
