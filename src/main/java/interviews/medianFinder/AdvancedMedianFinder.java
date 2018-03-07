@@ -3,7 +3,7 @@ package interviews.medianFinder;
 /**
  * Find the median value from two sorted arrays.
  *
- * Work-in-progress: attempting to find median
+ * Attempts to find median
  * by counting elements either side.
  */
 public class AdvancedMedianFinder {
@@ -21,93 +21,69 @@ public class AdvancedMedianFinder {
 
         AdvancedMedianFinder mf = new AdvancedMedianFinder();
 
-        int index = mf.partition(listTwo, 2);
-        System.out.println(index);
-        index = mf.partition(listTwo, 4);
-        System.out.println(index);
-        index = mf.partition(listTwo, 6);
-        System.out.println(index);
-        index = mf.partition(listTwo, 0);
-        System.out.println(index);
-        index = mf.partition(listTwo, 9);
-        System.out.println(index);
+        System.out.println("Odd list");
+        int oddValue = mf.median(listOne, listTwo);
+        System.out.println(oddValue);
 
-        int value = mf.median(listOne, listTwo);
-        System.out.println(value);
+        System.out.println("-----------------------------------");
 
-        int value2 = mf.median(listThree, listFour);
-        System.out.println(value2);
-
-
-//        int oddMedian = mf.efficientMedian(listOne, listTwo);
-//        System.out.println("Odd Median: " + oddMedian);
-//
-//        int evenMedian = mf.efficientMedian(listThree, listFour);
-//        System.out.println("Even Median: " + evenMedian);
-
+        System.out.println("Even list");
+        int evenValue = mf.median(listThree, listFour);
+        System.out.println(evenValue);
     }
-
 
     public int median(int[] arrayOne, int[] arrayTwo) {
 
-
-        //int guess = -1;
         int totalLength = arrayOne.length + arrayTwo.length;
         int wantedIndex = totalLength/2;
+        System.out.println("Array Length: " + totalLength);
+        System.out.println("Median Expected at Overall Index: " + wantedIndex);
 
+        int median = findValueAtOverallIndex(arrayOne, arrayTwo, wantedIndex);
 
-        boolean medianFound = false;
-        int guessIndex = arrayOne.length / 2;
+        if (totalLength % 2 == 0) {
+            int previousValue = findValueAtOverallIndex(arrayOne, arrayTwo, wantedIndex - 1);
+            return (median + previousValue) / 2;
+        }
+        else {
+            return median;
+        }
+    }
 
-
-        int start = 0;
-        int finish = arrayOne.length - 1;
-
-
-        while (start<=finish) {
-
-            int index = (start + finish)/2;
-            int guess = arrayOne[index];
-
-            //guess = arrayOne[guessIndex];
-
-            int partition = partition(arrayTwo, guess);
-
-            int valuesBelow = guessIndex + partition + 1;
-            int valuesAbove = (arrayOne.length - guessIndex) + (arrayTwo.length - partition);
-
-            System.out.println("Index= "+ index + ". Guess= "+ guess + ". Values Below= " + valuesBelow + ". Values Above= " + valuesAbove);
-
-            if (valuesBelow == wantedIndex) {
-                medianFound = true;
-                System.out.println("Found!");
-                return guess;
-            }
-
-            if (valuesBelow < wantedIndex) {
-                start++;
-            }
-            else {
-                finish--;
-            }
-
-
-
+    // find the value from two sorted arrays at the supplied overall index
+    // if the index is not contained in list one, it will try list two
+    public int findValueAtOverallIndex(int[] arrayOne, int[] arrayTwo, int wantedIndex) {
+        int listOneMedian = searchArray(wantedIndex,arrayOne, arrayTwo);
+        if (listOneMedian != -1) {
+            return listOneMedian;
+        }
+        int listTwoMedian = searchArray(wantedIndex, arrayTwo, arrayOne);
+        if (listTwoMedian != -1) {
+            return listTwoMedian;
         }
 
         return -1;
-
     }
 
-    // partition a list in two
-    // return index of partition so that...
-    // < value exist in lower partition
-    // >= value exist in upper partition
-    public int partition(int[] array, int search) {
+    // find number of elements from start of array to searched value
+    // it is possible that value doesn't exist so we have to find expected
+    // position (e.g. searching for 3 which doesn't exist but 2 and 4 do).
+    public int distanceTo(int[] array, int search) {
+
+        // is search value less than entire array?
+        if (search < array[0]) {
+            return 0;
+        }
+
+        // is search value greater than entire array?
+        if (search > array[array.length-1]) {
+            return array.length;
+        }
 
         int lowerPointer = 0;
         int upperPointer = array.length - 1;
         int midIndex = -1;
+        int missedIndex = -1;
 
         while(lowerPointer <= upperPointer) {
 
@@ -118,31 +94,52 @@ public class AdvancedMedianFinder {
                 return midIndex;
             }
 
+            // this is not a match but is but we need to calculate an index to
+            // represent the search's value position (e.g. 3 is not found but it would be
+            // between existing values 2 and 4)
+            if (search > array[lowerPointer] && search < array[upperPointer]) {
+                missedIndex = (foundValue < search) ? upperPointer : midIndex;
+            }
+
             if (foundValue < search) {
                 lowerPointer = midIndex + 1;
             }
             else {
                 upperPointer = midIndex - 1;
             }
-
-//            System.out.println(midIndex);
-//            System.out.println(upperPointer);
-//            System.out.println(lowerPointer);
-//            System.out.println(array[lowerPointer]);
-//            System.out.println("------------------------------------------");
-
-
-
-
         }
 
-        return midIndex;
-
-
-
-
+        return missedIndex;
     }
 
+    // use a binary search technique to guess and refine the index of the overall median
+    // each guess can be tested against the other array to create an overall index
+    // if the median can't be found in this array return -1
+    private int searchArray(int wantedIndex, int[] array, int[] otherArray) {
+        int start = 0;
+        int finish = array.length - 1;
 
+        while (start<=finish) {
 
+            int index = (start + finish) / 2;
+            int guess = array[index];
+            int distanceToGuess = index +  distanceTo(otherArray, guess);
+
+            System.out.println("Guess = "+ guess + ". Overall Index = " + distanceToGuess + ".");
+
+            if (distanceToGuess == wantedIndex) {
+                System.out.println("Found!");
+                return guess;
+            }
+
+            if (distanceToGuess < wantedIndex) {
+                start++;
+            }
+            else {
+                finish--;
+            }
+        }
+
+        return -1;
+    }
 }
