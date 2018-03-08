@@ -6,16 +6,17 @@ import java.util.Arrays;
  * You are given an array of Integers representing the height of hills.
  * You need to calculate the sum of all the snow that can rest in the valleys between the peaks, e.g.:
  *
- *										X
- *					X	*	*	*	*	X	*	*	X			*	Snow
- *					X	*	X	*	*	X	*	*	X			X	Hill
- *				X	X	*	X	X	*	X	*	X	X
- * Height:	0	1	3	0	2	1	0	4	0	1	3	0
- * Index:	0	1	2	3	4	5	6	7	8	9	10	11
+ *                                     X
+ *                 X   *   *   *   *   X   *   *   X         *   Snow
+ *                 X   *   X   *   *   X   *   *   X         X   Hill
+ *             X   X   *   X   X   *   X   *   X   X
+ * Height: 0   1   3   0   2   1   0   4   0   1   3   0
+ * Index:  0   1   2   3   4   5   6   7   8   9   10  11
  *
  * Total snow = 14
  *
  */
+
 public class HillsAndSnow {
 
     public static void main(String[] args) {
