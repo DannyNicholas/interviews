@@ -2,6 +2,13 @@ package interviews.JoiningSegments;
 
 import java.util.*;
 
+/**
+ * Given a list of pairs representing path segments, return the list of segments in an order that represents
+ * one continuous path. e.g. (11, 4) -> (4, 9) -> (9, 5) -> (5, 1).
+ *
+ * Assume if you see a pair in one direction, you won't see it in the other. e.g. if you have (2, 1), you won't have
+ * (1, 2). If you can't form a continuous path, throw an exception.
+ */
 public class JoiningSegments {
 
 
