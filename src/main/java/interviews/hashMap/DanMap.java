@@ -53,7 +53,8 @@ public class DanMap<K, V> {
         int bucketId = findBucket(key);
         Set<Element<K, V>> bucket = buckets.get(bucketId);
         Element<K, V> element = new Element<>(key, value);
-        // remove previous element
+
+        // remove previous element in case element with same key already exists in set
         bucket.remove(element);
         bucket.add(element);
     }

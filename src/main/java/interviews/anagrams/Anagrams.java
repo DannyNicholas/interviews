@@ -28,10 +28,8 @@ public class Anagrams {
 
                 // swap chars in a copy
                 char[] copy = Arrays.copyOf(chars, chars.length);
-                char tmp = copy[startIndex];
-                copy[startIndex] = copy[i];
-                copy[i] = tmp;
-
+                copy[startIndex] = chars[i];
+                copy[i] = chars[startIndex];
                 set.addAll(anagramRecursive(copy, startIndex+1));
             }
         }
