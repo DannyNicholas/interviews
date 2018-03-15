@@ -19,6 +19,13 @@ public class PrimeFactors {
         sol.factorise(6);
         sol.factorise(22);
         sol.factorise(11);
+
+        System.out.println("--------------------");
+
+        sol.factorise2(12);
+        sol.factorise2(6);
+        sol.factorise2(22);
+        sol.factorise2(11);
     }
 
     public PrimeFactors() {
@@ -77,5 +84,41 @@ public class PrimeFactors {
         }
 
         return primeArray;
+    }
+
+    /**
+     * Calculates primes on-the-fly
+     * No need for a pre-calculated list.
+     *
+     * @param n
+     * @return
+     */
+    private Integer[] factorise2(int n) {
+
+        int remaining = n;
+        List<Integer> factors = new ArrayList<>();
+
+        while (remaining > 1) {
+            int prime = getNextPrime(remaining);
+            remaining = remaining / prime;
+            factors.add(prime);
+        }
+
+        System.out.println(n + " = " + factors);
+
+        Integer factorArray[] = new Integer[factors.size()];
+        factorArray = factors.toArray(factorArray);
+
+        return factorArray;
+    }
+
+    private int getNextPrime(int n) {
+        for (int i = 2; i <= n; i++) {
+            if (n % i == 0) {
+                return i;
+            }
+        }
+
+        return 1;
     }
 }
