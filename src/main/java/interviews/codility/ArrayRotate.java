@@ -1,4 +1,4 @@
-package interviews.arrayRotate;
+package interviews.codility;
 
 
 import java.util.Arrays;

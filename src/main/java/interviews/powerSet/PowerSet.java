@@ -30,7 +30,7 @@ public class PowerSet {
     }
 
     public static void main(String[] args) {
-        Set<String> permutations = powerSet("hello");
+        Set<String> permutations = powerSet("abcd");
         permutations.remove("");
         System.out.println(permutations);
     }
